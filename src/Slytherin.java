@@ -1,81 +1,71 @@
-public class Slytherin extends Hogwarts {
-    private int trick; //хитрость
-    private int determination; // решительность
-    private int ambition; //амбициозность
-    private static int resourcefulness; //находчивость
-    private static int authority;//жажда власти
+public class Slytherin extends Hogwarts<Slytherin> {
+    private final int cunning;
+    private final int determination;
+    private final int ambition;
+    private final int resourcefulness;
+    private final int lustForPower;
 
-    public Slytherin(String name, String surname, int magic, int transgression, int trick, int determination, int ambition, int resourcefulness, int authority) {
-        super(name, surname, magic, transgression);
-        this.trick = trick;
+    public Slytherin(String name, int magicPower, int transgressionDistance, int cunning, int determination, int ambition, int resourcefulness, int lustForPower) {
+        super(name, magicPower, transgressionDistance);
+        this.cunning = cunning;
         this.determination = determination;
         this.ambition = ambition;
         this.resourcefulness = resourcefulness;
-        this.authority = authority;
+        this.lustForPower = lustForPower;
     }
 
-    public int getTrick() {
-        return trick;
-    }
-
-    public void setTrick(int trick) {
-        this.trick = trick;
+    public int getCunning() {
+        return cunning;
     }
 
     public int getDetermination() {
         return determination;
     }
 
-    public void setDetermination(int determination) {
-        this.determination = determination;
-    }
-
     public int getAmbition() {
         return ambition;
     }
 
-    public void setAmbition(int ambition) {
-        this.ambition = ambition;
-    }
-
-    public static int getResourcefulness() {
+    public int getResourcefulness() {
         return resourcefulness;
     }
 
-    public void setResourcefulness(int resourcefulness) {
-        this.resourcefulness = resourcefulness;
+    public int getLustForPower() {
+        return lustForPower;
     }
 
-    public static int getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(int authority) {
-        this.authority = authority;
-    }
-
-    public static void compareSlytherin(Slytherin student1, Slytherin student2) {
-        int s1Score = student1.getAmbition() + student1.getTrick() + student1.getDetermination() + getResourcefulness() + getAuthority();
-        int s2Score = student2.getAmbition() + student2.getTrick() + student2.getDetermination() + getResourcefulness() + getAuthority();
-
-        if (s1Score > s2Score) {
-            System.out.println(student1.getName() + " " + student1.getSurname() + " лучший Слизеринец, чем " + student2.getName() + " " + student2.getSurname());
-        } else {
-            System.out.println(student2.getName() + " " + student2.getSurname() + " лучший Слизеринец, чем " + student1.getName() + " " + student1.getSurname());
+    @Override
+    public void compareByFaculty(Slytherin slytherinStudent) {
+        if (slytherinStudent == null) {
+            throw new IllegalArgumentException("slytherinStudent cannot be null");
         }
+
+        Slytherin best = this;
+        Slytherin worst = slytherinStudent;
+
+        if (this.getTotalFacultyScore() < slytherinStudent.getTotalFacultyScore()) {
+            best = slytherinStudent;
+            worst = this;
+        }
+
+        System.out.printf("%s лучший Слизеринец, чем %s\n", best.getName(), worst.getName());
+    }
+
+    @Override
+    public int getTotalFacultyScore() {
+        return this.cunning + this.determination + this.ambition + this.resourcefulness + this.lustForPower;
     }
 
     @Override
     public String toString() {
-        return "Имя и фамилия ученика: " + getName() +
-                " " + getSurname() +
-                ", баллы колдовства " + getMagic() +
-                ", баллы трансгрессии " + getTransgression() +
-                ", Слизерин: " +
-                "хитрость " + trick +
-                ", решительность " + determination +
-                ", амбициозность " + ambition +
-                ", находчивость " + resourcefulness +
-                ", жажда власти " + authority;
+        return String.format(
+                "%s, хитрость (%s), решительность (%s), амбициозность (%s), находчивость (%s), жажда власти (%s)",
+                super.toString(),
+                this.cunning,
+                this.determination,
+                this.ambition,
+                this.resourcefulness,
+                this.lustForPower
+        );
     }
 }
